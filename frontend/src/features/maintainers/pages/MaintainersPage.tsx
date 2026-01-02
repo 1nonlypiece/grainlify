@@ -42,6 +42,13 @@ export function MaintainersPage({ onNavigate }: MaintainersPageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedRepoIds, setSelectedRepoIds] = useState<Set<string>>(new Set());
+  const [failedAvatars, setFailedAvatars] = useState<Set<string>>(new Set());
+
+  // Helper function to get GitHub repository avatar (owner's avatar)
+  const getRepoAvatar = (githubFullName: string, size: number = 20): string => {
+    const [owner] = githubFullName.split('/');
+    return `https://github.com/${owner}.png?size=${size}`;
+  };
 
   const tabs: TabType[] = ['Dashboard', 'Issues', 'Pull Requests'];
 
