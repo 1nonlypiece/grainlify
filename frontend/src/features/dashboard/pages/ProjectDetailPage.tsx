@@ -657,11 +657,26 @@ export function ProjectDetailPage({ onBack, onIssueClick, projectId: propProject
                 {project.readme}
               </ReactMarkdown>
             </div>
+          ) : description ? (
+            <p className={`text-[15px] leading-relaxed transition-colors ${
+              theme === 'dark' ? 'text-[#d4d4d4]' : 'text-[#4a3f2f]'
+            }`}>
+              {description}
+            </p>
           ) : (
             <p className={`text-[15px] leading-relaxed transition-colors ${
               theme === 'dark' ? 'text-[#d4d4d4]' : 'text-[#4a3f2f]'
             }`}>
-              {description || 'No description available.'}
+              No description available. Visit the <a 
+                href={githubUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className={`font-semibold hover:underline transition-colors ${
+                  theme === 'dark' 
+                    ? 'text-[#f5c563] hover:text-[#ffd700]' 
+                    : 'text-[#b8872f] hover:text-[#8b6f3a]'
+                }`}
+              >GitHub repository</a> for more information.
             </p>
           )}
         </div>

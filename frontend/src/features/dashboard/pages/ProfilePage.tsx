@@ -9,6 +9,9 @@ interface ProfileData {
   contributions_count: number;
   languages: Array<{ language: string; contribution_count: number }>;
   ecosystems: Array<{ ecosystem_name: string; contribution_count: number }>;
+  projects_contributed_to_count?: number;
+  projects_led_count?: number;
+  rewards_count?: number;
   rank: {
     position: number | null;
     tier: string;
@@ -290,33 +293,13 @@ export function ProfilePage() {
                       ? 'text-[#f5c563]'
                       : 'bg-gradient-to-r from-[#2d2820] via-[#c9983a] to-[#2d2820] bg-clip-text text-transparent'
                   }`}>
-                    {userRole || 'contributor'}
+                    {profileData?.rank?.tier_name 
+                      ? `${profileData.rank.tier_name}${profileData.rank.position ? ` #${profileData.rank.position}` : ''}`
+                      : (userRole || 'contributor')}
                   </span>
                   <Sparkles className="w-5 h-5 text-[#c9983a] animate-pulse drop-shadow-[0_0_8px_rgba(201,152,58,0.6)]" />
                 </div>
 
-                {/* Rank Badge */}
-                {profileData?.rank && (
-                  <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-[14px] backdrop-blur-[30px] bg-gradient-to-r from-white/[0.2] to-white/[0.15] border-[2.5px] border-white/30 shadow-[0_10px_30px_rgba(0,0,0,0.1),inset_0_1px_3px_rgba(255,255,255,0.3)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.15),inset_0_1px_3px_rgba(255,255,255,0.4)] hover:scale-105 transition-all duration-300 group/rank-badge">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#c9983a] to-[#d4af37] flex items-center justify-center shadow-[0_3px_12px_rgba(201,152,58,0.5),inset_0_1px_2px_rgba(255,255,255,0.5)]">
-                      {getRankIcon(profileData.rank.tier_name)}
-                    </div>
-                    <span className={`text-[16px] font-black tracking-wide capitalize transition-colors ${
-                      theme === 'dark'
-                        ? 'text-[#f5f5f5]'
-                        : 'text-[#2d2820]'
-                    }`}>
-                      {profileData.rank.tier_name}
-                    </span>
-                    {profileData.rank.position && (
-                      <span className={`text-[14px] font-bold transition-colors ${
-                        theme === 'dark' ? 'text-[#d4d4d4]' : 'text-[#7a6b5a]'
-                      }`}>
-                        #{profileData.rank.position}
-                      </span>
-                    )}
-                  </div>
-                )}
               </div>
 
               {/* Stats Grid - Inline Premium Style */}
@@ -346,7 +329,7 @@ export function ProfilePage() {
                     <div>
                       <div className={`text-[28px] font-black leading-none mb-1 drop-shadow-sm transition-colors ${
                         theme === 'dark' ? 'text-[#f5f5f5]' : 'text-[#2d2820]'
-                      }`}>4</div>
+                      }`}>{isLoadingProfile ? '...' : (profileData?.rewards_count || 0)}</div>
                       <div className={`text-[12px] font-bold uppercase tracking-wider transition-colors ${
                         theme === 'dark' ? 'text-[#d4d4d4]' : 'text-[#7a6b5a]'
                       }`}>Rewards</div>
@@ -365,7 +348,7 @@ export function ProfilePage() {
                     }`}>
                       Contributor on <span className={`font-black text-[16px] transition-colors ${
                         theme === 'dark' ? 'text-[#f5f5f5]' : 'text-[#2d2820]'
-                      }`}>48</span> projects
+                      }`}>{isLoadingProfile ? '...' : (profileData?.projects_contributed_to_count || 0)}</span> projects
                     </span>
                   </div>
                 </div>
@@ -380,7 +363,7 @@ export function ProfilePage() {
                     }`}>
                       Lead <span className={`font-black text-[16px] transition-colors ${
                         theme === 'dark' ? 'text-[#f5f5f5]' : 'text-[#2d2820]'
-                      }`}>3</span> projects
+                      }`}>{isLoadingProfile ? '...' : (profileData?.projects_led_count || 0)}</span> projects
                     </span>
                   </div>
                 </div>

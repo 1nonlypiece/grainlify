@@ -120,6 +120,9 @@ export const getGitHubStatus = () =>
 export const getUserProfile = () =>
   apiRequest<{
     contributions_count: number;
+    projects_contributed_to_count: number;
+    projects_led_count: number;
+    rewards_count: number;
     languages: Array<{ language: string; contribution_count: number }>;
     ecosystems: Array<{ ecosystem_name: string; contribution_count: number }>;
     rank: {
