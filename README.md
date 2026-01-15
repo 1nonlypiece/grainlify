@@ -1,192 +1,306 @@
-# 📘 Core Product Idea — Grant Execution Infrastructure for Open Source
+# 📘 Grainlify — Grant Execution Infrastructure for Open Source
 
 ## 1. Problem Statement
 
-Open-source ecosystems regularly allocate **grant funding** to support critical projects and contributors.  
+Open-source ecosystems regularly allocate **grant funding** to support critical projects and contributors.
+
 However, today’s grant execution model has major gaps:
 
-- Grant money is often distributed **off-chain**
-- Project maintainers manually manage funds
-- Contributor payments are delayed, subjective, or opaque
-- Ecosystems lack verifiable proof of how grants translate into real work
-- Contributors must trust maintainers or platforms to be paid fairly
+- Grant money is often managed **off-chain**
+- Project maintainers manually distribute rewards
+- Contributor payments are delayed or subjective
+- Ecosystems lack verifiable proof of how grants convert into real work
+- Contributors must trust platforms or maintainers to be paid fairly
 
-Platforms like OnlyDust solve **grant discovery and community coordination**,  
-but **grant execution and payout automation remain largely manual**.
+Platforms like OnlyDust solve **grant discovery and coordination**, but **grant execution and payout automation remain largely manual**.
 
 ---
 
 ## 2. Our Core Idea (One Sentence)
 
-> **We build a grant execution layer that converts ecosystem funding into automated, verifiable payments for open-source contributions.**
+> **Grainlify is a grant execution layer that converts ecosystem funding into automated, verifiable payments for open-source contributions.**
 
 ---
 
 ## 3. High-Level Concept
 
-Our platform sits **between ecosystems and contributors**, ensuring that:
+Grainlify sits **between ecosystems and contributors**, ensuring that:
 
-1. Ecosystems fund **programs**
+1. Ecosystems fund **programs** (hackathons, grant rounds)
 2. Programs fund **projects**
 3. Projects fund **contributors**
 4. All payouts are:
    - escrow-backed
    - rule-based
-   - cryptographically verifiable
-   - automated on real work completion
+   - automated on real GitHub work
+   - verifiable on-chain
 
 ---
 
-## 4. System Roles
+## 4. Two Core Execution Modes
 
-### Ecosystems (Casper, Cronos, etc.)
-- Provide grant capital
-- Define program goals and scope
-- Gain transparent visibility into outcomes
+Grainlify supports both **time-boxed programs** and **continuous contributions**.
 
-### Platform (Us)
-- Operates grant programs (monthly hacks, quests)
-- Selects and allocates grants to projects
-- Enforces execution rules
-- Automates payouts
+### A. Monthly Hackathons (Program Mode)
 
-### Project Maintainers
-- Receive grant allocations
-- Lock grants into on-chain escrow
-- Create bounties linked to GitHub issues
+- Grainlify runs **monthly hackathons** (e.g. 1 week)
+- Multiple projects from different ecosystems participate
+- All contributions are tracked during the event
+- Each hackathon has:
+  - a **fixed prize pool**
+  - a **fixed total point supply**
 
-### Contributors
-- Work normally on GitHub
-- Submit PRs
-- Get paid automatically on successful merges
+#### Example
 
----
+- Prize pool: $10,000 (locked before start)
+- Total points: 10,000
+- Conversion: 1 point = $1
 
-## 5. End-to-End Grant Flow
+Contributors earn points based on:
 
-### Step 1 — Ecosystem Funds a Program
-- Ecosystem commits capital to a grant program
-- Funds are earmarked for a defined period (e.g. monthly hack)
+- PRs merged
+- issue difficulty
+- maintainer-defined weights
 
----
+At the end:
 
-### Step 2 — Program Runs (Hackathon / Quest)
-- Projects apply to participate
-- Contributors work on eligible projects
-- Activity metrics are tracked
+- points are finalized
+- rewards are calculated proportionally
+- payouts are executed automatically
 
----
+### B. Always-On Bounties (Continuous Mode)
 
-### Step 3 — Project Selection & Grant Allocation
-- Top-performing projects are selected
-- Each project receives a grant allocation
+Outside hackathons:
 
-> Up to this point, this mirrors existing grant platforms.
-
----
-
-### Step 4 — Grant Moves into On-Chain Escrow (Key Differentiator)
-- Project maintainer locks grant funds into an escrow smart contract
-- Funds become:
-  - non-custodial
-  - transparent
-  - rule-bound
-
----
-
-### Step 5 — Bounty Creation
-- Maintainer splits grant into bounties
+- Maintainers can create bounties anytime
 - Each bounty:
   - is linked to a GitHub issue
-  - has a defined reward and deadline
+  - has a fixed reward (points or amount)
   - is fully escrow-backed
 
----
-
-### Step 6 — Contribution & Verification
-- Contributor submits PR
-- PR is reviewed and merged on GitHub
-- Backend verifies:
-  - merge status
-  - issue linkage
-  - contributor identity
+This enables **continuous OSS funding**, not just events.
 
 ---
 
-### Step 7 — Automated Payout
-- Backend triggers escrow release
-- Smart contract pays contributor directly
-- Proof of payout is generated and stored
+## 5. System Roles
+
+### Ecosystems (Casper, Cronos, etc.)
+
+- Provide grant capital
+- Define program scope and duration
+- Gain transparent, verifiable impact data
+
+### Grainlify Platform
+
+- Operates grant programs and hackathons
+- Tracks contributions and scoring
+- Enforces execution rules
+- Automates payouts
+- Handles compliance off-chain
+
+### Project Maintainers
+
+- Register projects
+- Create issues and bounties
+- Define point values
+- Lock funds into escrow
+
+### Contributors
+
+- Work normally on GitHub
+- Submit PRs
+- Earn points or rewards
+- Get paid automatically after verification
 
 ---
 
-## 6. Why This Model Works
+## 6. What Lives Where (Very Important)
+
+### Off-Chain (Backend)
+
+Stored and processed off-chain:
+
+- projects and repositories
+- GitHub issues and PRs (via webhooks / API)
+- point assignments and scoring
+- contributor rankings
+- KYC status
+- payout calculation
+
+This keeps the system:
+
+- flexible
+- efficient
+- privacy-safe
+
+### On-Chain (Smart Contracts)
+
+Stored on-chain **only**:
+
+- program or hackathon escrow
+- total funds locked
+- remaining balance
+- authorized payout key
+- final payouts to wallets
+
+No identities, points, or GitHub data are stored on-chain.
+
+---
+
+## 7. End-to-End Flow (Hackathon Example)
+
+### Step 1 — Program Funding
+
+- Ecosystem locks funds into an on-chain escrow  
+  Example: 50,000 CSPR for “Casper Q1 OSS Program”
+
+### Step 2 — Hackathon Runs
+
+- Projects participate
+- Contributors work on GitHub
+- Points are awarded off-chain
+
+### Step 3 — Scoring & Eligibility
+
+- Backend computes final scores
+- Only **KYC-approved contributors** are eligible for payout
+
+### Step 4 — Automated Payout
+
+- Backend triggers escrow contract
+- Funds are sent **directly** to contributor wallets
+- Backend never holds funds
+
+### Hackathon Flow (Diagram)
+
+```mermaid
+flowchart TB
+    Ecosystem["Ecosystem / Foundation"]
+    Escrow["On-chain Escrow<br/>Casper Smart Contract"]
+    Backend["Grainlify Backend"]
+    GitHub["GitHub<br/>Issues & PRs"]
+    Contributors["Contributors"]
+    Wallets["Contributor Wallets"]
+
+    Ecosystem -->|"Lock Prize Pool"| Escrow
+    Contributors -->|"Work & PRs"| GitHub
+    GitHub -->|"Webhooks"| Backend
+    Backend -->|"Score & KYC Check"| Backend
+    Backend -->|"Trigger Payout"| Escrow
+    Escrow -->|"Direct Transfer"| Wallets
+```
+
+### Detailed Sequence Flow
+
+```mermaid
+sequenceDiagram
+    participant E as Ecosystem
+    participant S as Casper Escrow Contract
+    participant B as Grainlify Backend
+    participant G as GitHub
+    participant C as Contributor
+    participant W as Contributor Wallet
+
+    E->>S: Lock Program Funds
+    C->>G: Submit PRs
+    G-->>B: PR Merged Webhook
+    B->>B: Award Points (Off-chain)
+    B->>S: Trigger Payouts
+    S->>W: Transfer CSPR
+```
+
+---
+
+## 8. KYC & Compliance Model
+
+KYC is handled entirely off-chain.
+
+- Contributor identity and status are never stored on-chain
+- Only wallets linked to approved KYC records are included in payouts
+
+This ensures:
+
+- privacy
+- regulatory flexibility
+- minimal on-chain complexity
+
+---
+
+## 9. Why This Model Works
 
 ### For Ecosystems
-- Full transparency into grant usage
-- Objective, verifiable impact metrics
-- Reduced grant misuse risk
+
+- Funds locked before work begins
+- Clear proof of grant usage
+- Reduced misuse risk
 
 ### For Maintainers
-- No manual fund management
-- Clear budget controls
-- Reduced admin overhead
+
+- No manual reward handling
+- Budget clarity
+- Lower admin overhead
 
 ### For Contributors
+
+- Predictable rewards
 - Guaranteed payouts
-- Fast settlement
-- Merit-based rewards
+- Merit-based scoring
 
 ---
 
-## 7. Key Differentiation
+## 10. Key Differentiation
 
-| Feature | Traditional Grant Platforms | Our Platform |
-|------|----------------------------|-------------|
+| Feature | Traditional Grant Platforms | Grainlify |
+|---|---:|---:|
 | Grant discovery | ✅ | ✅ |
-| Program management | ✅ | ✅ |
+| Hackathons | ✅ | ✅ |
+| Always-on bounties | ❌ | ✅ |
 | On-chain escrow | ❌ | ✅ |
-| PR-based automation | ❌ | ✅ |
-| Merge-triggered payouts | ❌ | ✅ |
-| Verifiable proofs | ❌ | ✅ |
+| Point-based allocation | ❌ | ✅ |
+| Automated payouts | ❌ | ✅ |
+| Non-custodial payments | ❌ | ✅ |
 
 ---
 
-## 8. Design Principles
+## 11. Design Principles
 
-- **Escrow-first**: funds are locked before work begins
-- **Automation over trust**: payouts triggered by objective signals
+- **Escrow-first**: funds locked before work begins
+- **Automation over trust**: payouts follow rules
 - **Minimal on-chain logic**: contracts act as vaults
-- **Off-chain intelligence**: verification and logic handled in backend
-- **Chain-agnostic**: same execution model across ecosystems
+- **Off-chain intelligence**: scoring and verification stay flexible
+- **Ecosystem-agnostic**: same execution model across chains
 
 ---
 
-## 9. What We Are (and Are Not)
+## 12. What Grainlify Is (and Is Not)
 
-### We Are:
-- A grant execution infrastructure
-- A payout automation layer
-- A coordination system for OSS funding
+### Grainlify Is
 
-### We Are Not:
-- A DAO
-- A marketplace
-- A replacement for GitHub
-- A centralized custodian
+- a grant execution infrastructure
+- a payout automation layer
+- a coordination system for OSS funding
 
----
+### Grainlify Is Not
 
-## 10. Vision
-
-Our long-term vision is to become the **default execution layer for open-source grants**, enabling ecosystems to move from:
-
-> *“We funded projects”*  
-to  
-> *“We verifiably paid for real work.”*
+- a DAO
+- a marketplace
+- a GitHub replacement
+- a custodial payment platform
 
 ---
 
-## 11. One-Line Summary
+## 13. Vision
 
-> **We turn ecosystem grants into automatic, verifiable payments for open-source contributions.**
+Grainlify’s long-term vision is to become the default execution layer for open-source grants, enabling ecosystems to move from:
+
+> “We funded projects.”
+
+to:
+
+> “We verifiably paid for real work.”
+
+---
+
+## 14. One-Line Summary
+
+> **Grainlify turns ecosystem grants into automatic, verifiable payments for open-source contributions.**
