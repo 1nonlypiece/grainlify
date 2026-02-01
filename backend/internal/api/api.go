@@ -93,6 +93,11 @@ func New(cfg config.Config, deps Deps) *fiber.App {
 			return true
 		}
 
+		// Allow production domain (*.0xo.in) for grainlify.0xo.in / api.grainlify.0xo.in
+		if strings.HasSuffix(origin, ".0xo.in") {
+			return true
+		}
+
 		// Check explicit CORS origins from config
 		if _, ok := explicitOrigins[origin]; ok {
 			return true
