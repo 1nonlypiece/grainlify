@@ -466,8 +466,9 @@ func (h *ProjectsPublicHandler) List() fiber.Handler {
 		var args []any
 		argPos := 1
 
-		// Only show verified projects
+		// Only show verified projects that have completed setup (have metadata)
 		conditions = append(conditions, "p.status = 'verified'")
+		conditions = append(conditions, "p.needs_metadata = false")
 
 		// Exclude special GitHub repositories (owner/.github)
 		conditions = append(conditions, "split_part(p.github_full_name, '/', 2) != '.github'")
@@ -692,7 +693,7 @@ SELECT
   e.slug AS ecosystem_slug
 FROM projects p
 LEFT JOIN ecosystems e ON p.ecosystem_id = e.id
-WHERE p.status = 'verified' AND p.deleted_at IS NULL AND split_part(p.github_full_name, '/', 2) != '.github'
+WHERE p.status = 'verified' AND p.deleted_at IS NULL AND p.needs_metadata = false AND split_part(p.github_full_name, '/', 2) != '.github'
 ORDER BY contributors_count DESC, p.stars_count DESC, p.created_at DESC
 LIMIT $1
 `
@@ -771,11 +772,11 @@ func (h *ProjectsPublicHandler) FilterOptions() fiber.Handler {
 			return c.Status(fiber.StatusServiceUnavailable).JSON(fiber.Map{"error": "db_not_configured"})
 		}
 
-		// Get distinct languages
+		// Get distinct languages (only from projects that completed setup / appear on Browse)
 		langRows, err := h.db.Pool.Query(c.Context(), `
 SELECT DISTINCT language
 FROM projects
-WHERE status = 'verified' AND language IS NOT NULL AND language != ''
+WHERE status = 'verified' AND needs_metadata = false AND language IS NOT NULL AND language != ''
 ORDER BY language
 `)
 		if err != nil {
@@ -791,11 +792,11 @@ ORDER BY language
 			}
 		}
 
-		// Get distinct categories
+		// Get distinct categories (only from projects that completed setup / appear on Browse)
 		catRows, err := h.db.Pool.Query(c.Context(), `
 SELECT DISTINCT category
 FROM projects
-WHERE status = 'verified' AND category IS NOT NULL AND category != ''
+WHERE status = 'verified' AND needs_metadata = false AND category IS NOT NULL AND category != ''
 ORDER BY category
 `)
 		if err != nil {
@@ -811,11 +812,11 @@ ORDER BY category
 			}
 		}
 
-		// Get all unique tags from verified projects
+		// Get all unique tags from verified projects that completed setup / appear on Browse
 		tagRows, err := h.db.Pool.Query(c.Context(), `
 SELECT DISTINCT jsonb_array_elements_text(tags) AS tag
 FROM projects
-WHERE status = 'verified' AND tags IS NOT NULL AND jsonb_array_length(tags) > 0
+WHERE status = 'verified' AND needs_metadata = false AND tags IS NOT NULL AND jsonb_array_length(tags) > 0
 ORDER BY tag
 `)
 		if err != nil {
