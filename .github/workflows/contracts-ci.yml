@@ -106,3 +106,13 @@ jobs:
           contracts/scripts/test_deploy_failures.sh
           contracts/scripts/test_upgrade_failures.sh
 
+      - name: Debug repo structure
+        run: |
+          echo "=== WORKING DIRECTORY ==="
+          pwd
+          echo "=== ROOT CONTENTS ==="
+          ls -la
+          echo "=== FULL TREE ==="
+          ls -R .
+
+
