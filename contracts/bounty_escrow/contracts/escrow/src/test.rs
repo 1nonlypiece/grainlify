@@ -287,10 +287,7 @@ fn test_partial_release_single_minimum_unit() {
     assert_eq!(escrow.remaining_amount, amount - payout); // 999
     assert_eq!(escrow.status, EscrowStatus::Locked); // still locked, funds remain
     assert_eq!(setup.token.balance(&setup.contributor), payout);
-    assert_eq!(
-        setup.token.balance(&setup.escrow.address),
-        amount - payout
-    );
+    assert_eq!(setup.token.balance(&setup.escrow.address), amount - payout);
 }
 
 /// Releasing all but 1 unit must leave a remainder of exactly 1 — not 0 or negative.
