@@ -1,7 +1,10 @@
 #[cfg(test)]
 mod cross_contract_interface_tests {
     use crate::{BountyEscrowContract, EscrowStatus};
-    use soroban_sdk::{testutils::{Address as _, Ledger}, token, Address, Env};
+    use soroban_sdk::{
+        testutils::{Address as _, Ledger},
+        token, Address, Env,
+    };
 
     fn create_token_contract<'a>(
         e: &Env,
@@ -28,7 +31,7 @@ mod cross_contract_interface_tests {
 
         let (token, token_admin) = create_token_contract(&env, &admin);
         client.init(&admin, &token.address);
-        
+
         // Mint tokens to depositor
         token_admin.mint(&depositor, &1_000_000);
 
@@ -59,7 +62,7 @@ mod cross_contract_interface_tests {
 
         let (token, token_admin) = create_token_contract(&env, &admin);
         client.init(&admin, &token.address);
-        
+
         // Mint tokens to depositor
         token_admin.mint(&depositor, &1_000_000);
 
@@ -90,7 +93,7 @@ mod cross_contract_interface_tests {
 
         let (token, token_admin) = create_token_contract(&env, &admin);
         client.init(&admin, &token.address);
-        
+
         // Mint tokens to depositor
         token_admin.mint(&depositor, &1_000_000);
 
@@ -125,7 +128,7 @@ mod cross_contract_interface_tests {
 
         let (token, token_admin) = create_token_contract(&env, &admin);
         client.init(&admin, &token.address);
-        
+
         // Mint tokens to depositor
         token_admin.mint(&depositor, &1_000_000);
 
@@ -163,7 +166,7 @@ mod cross_contract_interface_tests {
 
         let (token, token_admin) = create_token_contract(&env, &admin);
         client.init(&admin, &token.address);
-        
+
         // Mint tokens to depositor
         token_admin.mint(&depositor, &1_000_000);
 
@@ -192,7 +195,7 @@ mod cross_contract_interface_tests {
 
         let (token, token_admin) = create_token_contract(&env, &admin);
         client.init(&admin, &token.address);
-        
+
         // Mint tokens to depositor
         token_admin.mint(&depositor, &1_000_000);
 
@@ -222,7 +225,7 @@ mod cross_contract_interface_tests {
 
         let (token, token_admin) = create_token_contract(&env, &admin);
         client.init(&admin, &token.address);
-        
+
         // Mint tokens to depositor
         token_admin.mint(&depositor, &1_000_000);
 
@@ -256,7 +259,7 @@ mod cross_contract_interface_tests {
 
         let (token, token_admin) = create_token_contract(&env, &admin);
         client.init(&admin, &token.address);
-        
+
         // Mint tokens to depositor
         token_admin.mint(&depositor, &1_000_000);
 
@@ -288,7 +291,7 @@ mod cross_contract_interface_tests {
 
         let (token, token_admin) = create_token_contract(&env, &admin);
         client.init(&admin, &token.address);
-        
+
         // Mint tokens to depositor
         token_admin.mint(&depositor, &1_000_000);
 

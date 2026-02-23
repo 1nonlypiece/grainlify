@@ -2,10 +2,10 @@
 mod events;
 mod invariants;
 
+mod test_cross_contract_interface;
 #[cfg(test)]
 mod test_rbac;
 mod traits;
-mod test_cross_contract_interface;
 
 use events::{
     emit_batch_funds_locked, emit_batch_funds_released, emit_bounty_initialized, emit_funds_locked,
@@ -2162,22 +2162,11 @@ impl traits::EscrowInterface for BountyEscrowContract {
         amount: i128,
         deadline: u64,
     ) -> Result<(), crate::Error> {
-        // Call the associated function with cloned env
-        BountyEscrowContract::lock_funds(
-            env.clone(),
-            depositor,
-            bounty_id,
-            amount,
-            deadline,
-        )
+        BountyEscrowContract::lock_funds(env.clone(), depositor, bounty_id, amount, deadline)
     }
 
     /// Release funds to contributor through the trait interface
-    fn release_funds(
-        env: &Env,
-        bounty_id: u64,
-        contributor: Address,
-    ) -> Result<(), crate::Error> {
+    fn release_funds(env: &Env, bounty_id: u64, contributor: Address) -> Result<(), crate::Error> {
         BountyEscrowContract::release_funds(env.clone(), bounty_id, contributor)
     }
 
@@ -2187,10 +2176,7 @@ impl traits::EscrowInterface for BountyEscrowContract {
     }
 
     /// Get escrow information through the trait interface
-    fn get_escrow_info(
-        env: &Env,
-        bounty_id: u64,
-    ) -> Result<crate::Escrow, crate::Error> {
+    fn get_escrow_info(env: &Env, bounty_id: u64) -> Result<crate::Escrow, crate::Error> {
         BountyEscrowContract::get_escrow_info(env.clone(), bounty_id)
     }
 
