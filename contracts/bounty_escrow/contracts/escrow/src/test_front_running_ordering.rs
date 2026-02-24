@@ -1,6 +1,9 @@
 use super::*;
 use soroban_sdk::testutils::Ledger;
-use soroban_sdk::{testutils::{Address as _, LedgerInfo}, token, Address, Env};
+use soroban_sdk::{
+    testutils::{Address as _, LedgerInfo},
+    token, Address, Env,
+};
 
 fn create_token_contract<'a>(
     env: &Env,
