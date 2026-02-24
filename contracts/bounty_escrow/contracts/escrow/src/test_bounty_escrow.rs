@@ -312,8 +312,10 @@ fn test_multi_token_balance_accounting_isolated_across_escrow_instances() {
 
     let token_admin_a = Address::generate(&env);
     let token_admin_b = Address::generate(&env);
-    let (token_a, token_client_a, token_admin_client_a) = create_token_contract(&env, &token_admin_a);
-    let (token_b, token_client_b, token_admin_client_b) = create_token_contract(&env, &token_admin_b);
+    let (token_a, token_client_a, token_admin_client_a) =
+        create_token_contract(&env, &token_admin_a);
+    let (token_b, token_client_b, token_admin_client_b) =
+        create_token_contract(&env, &token_admin_b);
 
     client_a.init(&admin, &token_a);
     client_b.init(&admin, &token_b);
